@@ -18,5 +18,6 @@ namespace Data_Logic_Layer.Entity
 
         public DbSet<MissionDto> Missions { get; set; }
         public DbSet<Theme> Themes { get; set; }
+        public DbSet<Skill> Skills { get; set; }    
     }
 }
