@@ -20,8 +20,13 @@ namespace CIPlatFormWebApi_V1.Controllers
 
         [HttpPost]
         [Route("CreateMission")]
-        public async Task<ResponseResult> CreateMission([FromBody] MissionDto model)
+        public async Task<IActionResult> CreateMission([FromBody] MissionDto model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             ResponseResult result = new ResponseResult();
 
             try
@@ -33,14 +38,15 @@ namespace CIPlatFormWebApi_V1.Controllers
             {
                 result.Message = ex.Message;
                 result.Result = ResponseStatus.Error;
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
             }
 
-            return result;
+            return Ok(result);
         }
 
         [HttpGet]
         [Route("GetMissions")]
-        public async Task<ResponseResult> GetMissionsWithDetails()
+        public async Task<IActionResult> GetMissionsWithDetails()
         {
             ResponseResult result = new ResponseResult();
 
@@ -53,15 +59,21 @@ namespace CIPlatFormWebApi_V1.Controllers
             {
                 result.Message = ex.Message;
                 result.Result = ResponseStatus.Error;
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
             }
 
-            return result;
+            return Ok(result);
         }
 
         [HttpGet]
         [Route("GetMissionById/{MissionId}")]
-        public async Task<ResponseResult> GetMissionDetailsById(int MissionId)
+        public async Task<IActionResult> GetMissionDetailsById(int MissionId)
         {
+            if (MissionId <= 0)
+            {
+                return BadRequest("Invalid Mission ID");
+            }
+
             ResponseResult result = new ResponseResult();
 
             try
@@ -73,15 +85,26 @@ namespace CIPlatFormWebApi_V1.Controllers
             {
                 result.Message = ex.Message;
                 result.Result = ResponseStatus.Error;
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
             }
 
-            return result;
+            return Ok(result);
         }
 
         [HttpPut]
         [Route("UpdateMission/{MissionId}")]
-        public async Task<ResponseResult> UpdateMission(int MissionId, [FromBody] MissionDto model)
+        public async Task<IActionResult> UpdateMission(int MissionId, [FromBody] MissionDto model)
         {
+            if (MissionId <= 0)
+            {
+                return BadRequest("Invalid Mission ID");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             ResponseResult result = new ResponseResult();
 
             try
@@ -93,15 +116,21 @@ namespace CIPlatFormWebApi_V1.Controllers
             {
                 result.Message = ex.Message;
                 result.Result = ResponseStatus.Error;
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
             }
 
-            return result;
+            return Ok(result);
         }
 
         [HttpDelete]
         [Route("DeleteMission/{id}")]
-        public async Task<ResponseResult> DeleteMission(int id)
+        public async Task<IActionResult> DeleteMission(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid Mission ID");
+            }
+
             ResponseResult result = new ResponseResult();
 
             try
@@ -113,9 +142,10 @@ namespace CIPlatFormWebApi_V1.Controllers
             {
                 result.Message = ex.Message;
                 result.Result = ResponseStatus.Error;
+                return StatusCode(StatusCodes.Status500InternalServerError, result);
             }
 
-            return result;
+            return Ok(result);
         }
     }
 }

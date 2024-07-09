@@ -26,6 +26,10 @@ builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IMission, DALMission>();
 builder.Services.AddScoped<BALMission>();
 
+// Register the DALMissionTheme and BALMissionTheme services
+builder.Services.AddScoped<IMissionTheme, DALMissionTheme>();
+builder.Services.AddScoped<BALMissionTheme>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
     x =>
     {

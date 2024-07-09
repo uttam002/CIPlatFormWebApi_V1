@@ -50,6 +50,8 @@ namespace Data_Logic_Layer.Entity
 
 
         public string? ThemeName { get; set; }
+        public string? ThemeDescription { get; set; }
+        public string? ThemeImage { get; set; }
 
         // Add any other properties as needed
     }
