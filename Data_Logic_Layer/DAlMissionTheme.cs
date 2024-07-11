@@ -47,7 +47,7 @@ namespace Data_Logic_Layer
             return "Mission theme updated successfully.";
         }
 
-        public async Task<Theme?> GetMissionThemeById(int missionThemeId)
+        public async Task<Theme> GetMissionThemeById(int missionThemeId)
         {
             return await _context.Themes.FindAsync(missionThemeId);
         }
