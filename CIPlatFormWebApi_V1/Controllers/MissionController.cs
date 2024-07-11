@@ -31,7 +31,12 @@ namespace CIPlatFormWebApi_V1.Controllers
 
             try
             {
-                result.Data = await _balMission.CreateMission(model);
+                var creationResult = await _balMission.CreateMission(model);
+                if (creationResult == "Mission with the same title and start date already exists.")
+                {
+                    return Conflict(new { message = creationResult });
+                }
+                result.Data = creationResult;
                 result.Result = ResponseStatus.Success;
             }
             catch (Exception ex)
@@ -109,7 +114,12 @@ namespace CIPlatFormWebApi_V1.Controllers
 
             try
             {
-                result.Data = await _balMission.UpdateMission(MissionId, model);
+                var updateResult = await _balMission.UpdateMission(MissionId, model);
+                if (updateResult == "Another mission with the same title already exists.")
+                {
+                    return Conflict(new { message = updateResult });
+                }
+                result.Data = updateResult;
                 result.Result = ResponseStatus.Success;
             }
             catch (Exception ex)

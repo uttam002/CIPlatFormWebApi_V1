@@ -21,6 +21,13 @@ namespace Data_Logic_Layer
 
         public async Task<string> CreateMissionSkill(Skill model)
         {
+            // Check for duplicate entry
+            var existingSkill = await _context.Skills.FirstOrDefaultAsync(s => s.Name == model.Name);
+            if (existingSkill != null)
+            {
+                return "Skill already exists.";
+            }
+
             _context.Skills.Add(model);
             await _context.SaveChangesAsync();
             return "Skill created successfully.";
@@ -31,6 +38,14 @@ namespace Data_Logic_Layer
             var skill = await _context.Skills.FindAsync(missionSkillId);
             if (skill != null)
             {
+                // Check for duplicate entry (excluding the current skill)
+                var existingSkill = await _context.Skills
+                    .FirstOrDefaultAsync(s => s.Name == model.Name && s.Id != missionSkillId);
+                if (existingSkill != null)
+                {
+                    return "Another skill with the same name already exists.";
+                }
+
                 skill.Name = model.Name;
                 skill.Status = model.Status;
                 await _context.SaveChangesAsync();

@@ -1,11 +1,7 @@
 ﻿using Data_Logic_Layer.Entity;
-using Data_Logic_Layer.Migrations;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
 
 namespace Data_Logic_Layer
 {
@@ -25,6 +21,14 @@ namespace Data_Logic_Layer
 
         public async Task<string> CreateMissionTheme(Theme model)
         {
+            // Check for duplicate entries
+            bool exists = await _context.Themes.AnyAsync(t => t.ThemeName == model.ThemeName);
+            if (exists)
+            {
+                return "Duplicate theme name. A theme with this name already exists.";
+            }
+
+            // Add the theme if it doesn't exist
             await _context.Themes.AddAsync(model);
             await _context.SaveChangesAsync();
             return "Mission theme created successfully.";
@@ -36,6 +40,13 @@ namespace Data_Logic_Layer
             if (existingTheme == null)
             {
                 return "Mission theme not found.";
+            }
+
+            // Check for duplicate entries
+            bool exists = await _context.Themes.AnyAsync(t => t.ThemeName == model.ThemeName && t.ThemeId != missionThemeId);
+            if (exists)
+            {
+                return "Duplicate theme name. A theme with this name already exists.";
             }
 
             existingTheme.ThemeName = model.ThemeName;

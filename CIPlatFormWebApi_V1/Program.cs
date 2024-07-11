@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using FluentValidation.AspNetCore;
+using CIPlatFormWebApi_V1.Validators;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,7 +36,10 @@ builder.Services.AddScoped<BALMissionTheme>();
 builder.Services.AddScoped<IMissionSkill, DALMissionSkill>();
 builder.Services.AddScoped<BALMissionSkill>();
 
-
+//Add Validators Here
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MissionValidator>());
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MissionThemeValidator>());
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<MissionSkillValidator>());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
     x =>
     {

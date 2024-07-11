@@ -55,10 +55,16 @@ namespace Data_Logic_Layer.Entity
 
         // Add any other properties as needed
     }
-    public class Skill {
-     public int Id { get; set; }
-    public string Name { get; set; }
-        public bool Status { get; set; }
+    public class Skill
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Name is required.")]
+        [StringLength(100, ErrorMessage = "Name can't be longer than 100 characters.")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Status is required.")]
+        public Boolean Status { get; set; }
     }
 
 }

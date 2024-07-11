@@ -16,6 +16,7 @@ namespace Business_Logic_Layer
 
         public async Task<string> CreateMission(MissionDto model)
         {
+            // Add business logic here if needed
             return await _dalMission.CreateMission(model);
         }
 
@@ -31,8 +32,10 @@ namespace Business_Logic_Layer
 
         public async Task<string> UpdateMission(int missionId, MissionDto model)
         {
+            // Add business logic here if needed
             return await _dalMission.UpdateMission(missionId, model);
         }
+
         public async Task<string> DeleteMission(int id)
         {
             return await _dalMission.DeleteMission(id);

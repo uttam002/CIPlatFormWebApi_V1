@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Business_Logic_Layer
 {
-    public class BALMissionTheme 
+    public class BALMissionTheme
     {
         private readonly IMissionTheme _dalMissionTheme;
 
@@ -21,11 +21,13 @@ namespace Business_Logic_Layer
 
         public async Task<string> CreateMissionTheme(Theme model)
         {
+            // The model should already be validated by the controller
             return await _dalMissionTheme.CreateMissionTheme(model);
         }
 
         public async Task<string> UpdateMissionTheme(int missionThemeId, Theme model)
         {
+            // The model should already be validated by the controller
             return await _dalMissionTheme.UpdateMissionTheme(missionThemeId, model);
         }
 

@@ -54,6 +54,7 @@ namespace CIPlatFormWebApi_V1.Controllers
             }
         }
 
+
         [HttpPut]
         [Route("UpdateMissionSkill/{missionSkillId}")]
         public async Task<IActionResult> UpdateMissionSkill(int missionSkillId, [FromBody] Skill model)
@@ -78,6 +79,7 @@ namespace CIPlatFormWebApi_V1.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
+
 
         [HttpGet]
         [Route("GetMissionSkillById/{missionSkillId}")]

@@ -72,6 +72,14 @@ namespace Data_Logic_Layer
         {
             try
             {
+                // Check for duplicate entry
+                var existingMission = await _authContext.Missions
+                    .FirstOrDefaultAsync(m => m.Title == model.Title);
+                if (existingMission != null)
+                {
+                    return "Mission with the same title already exists.";
+                }
+
                 var mission = new MissionDto
                 {
                     Title = model.Title,
@@ -101,6 +109,14 @@ namespace Data_Logic_Layer
                 if (mission == null)
                 {
                     return $"Mission with ID {missionId} not found.";
+                }
+
+                // Check for duplicate entry
+                var existingMission = await _authContext.Missions
+                    .FirstOrDefaultAsync(m => m.Title == model.Title && m.StartDate == model.StartDate && m.MissionId != missionId);
+                if (existingMission != null)
+                {
+                    return "Another mission with the same title and start date already exists.";
                 }
 
                 mission.Title = model.Title;
