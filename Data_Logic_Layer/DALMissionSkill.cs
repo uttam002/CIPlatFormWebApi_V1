@@ -1,55 +1,59 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Data_Logic_Layer.Entity;
 using Microsoft.EntityFrameworkCore;
+using Data_Logic_Layer.Entity;
 
 namespace Data_Logic_Layer
 {
     public class DALMissionSkill : IMissionSkill
     {
-        // Simulating database with an in-memory list for simplicity
-        private readonly List<Skill> _skills = new List<Skill>();
+        private readonly AppDbContext _context;
 
-        public Task<List<Skill>> GetMissionSkills()
+        public DALMissionSkill(AppDbContext context)
         {
-            return Task.FromResult(_skills);
+            _context = context;
         }
 
-        public Task<string> CreateMissionSkill(Skill model)
+        public async Task<List<Skill>> GetMissionSkills()
         {
-            model.Id = _skills.Count + 1;
-            wait _skills.Skill.AddAsync(model);
-            await _skills.SaveChangesAsync();
-            return Task.FromResult("Skill created successfully.");
+            return await _context.Skills.ToListAsync();
         }
 
-        public Task<string> UpdateMissionSkill(int missionSkillId, Skill model)
+        public async Task<string> CreateMissionSkill(Skill model)
         {
-            var skill = _skills.Find(s => s.Id == missionSkillId);
+            _context.Skills.Add(model);
+            await _context.SaveChangesAsync();
+            return "Skill created successfully.";
+        }
+
+        public async Task<string> UpdateMissionSkill(int missionSkillId, Skill model)
+        {
+            var skill = await _context.Skills.FindAsync(missionSkillId);
             if (skill != null)
             {
                 skill.Name = model.Name;
                 skill.Status = model.Status;
-                return Task.FromResult("Skill updated successfully.");
+                await _context.SaveChangesAsync();
+                return "Skill updated successfully.";
             }
-            return Task.FromResult("Skill not found.");
+            return "Skill not found.";
         }
 
-        public Task<Skill> GetMissionSkillById(int missionSkillId)
+        public async Task<Skill> GetMissionSkillById(int missionSkillId)
         {
-            var skill = _skills.Find(s => s.Id == missionSkillId);
-            return Task.FromResult(skill);
+            return await _context.Skills.FindAsync(missionSkillId);
         }
 
-        public Task<string> DeleteMissionSkill(int id)
+        public async Task<string> DeleteMissionSkill(int id)
         {
-            var skill = _skills.Find(s => s.Id == id);
+            var skill = await _context.Skills.FindAsync(id);
             if (skill != null)
             {
-                _skills.Remove(skill);
-                return Task.FromResult("Skill deleted successfully.");
+                _context.Skills.Remove(skill);
+                await _context.SaveChangesAsync();
+                return "Skill deleted successfully.";
             }
-            return Task.FromResult("Skill not found.");
+            return "Skill not found.";
         }
     }
 }
